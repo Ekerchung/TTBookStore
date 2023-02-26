@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+<!--    配置掃描組件-->
+    <context:component-scan base-package="com.shung.pojo">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+<!--    引入jdbc.properties-->
+    <context:property-placeholder location="classpath:jdbc.properties"></context:property-placeholder>
+<!--    配置Druid數據庫連接池-->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="user" value="${jdbc.user}"></property>
+        <property name="password" value="${jdbc.password}"></property>
+        <property name="url" value="${jdbc.url}"></property>
+        <property name="driver" value="${jdbc.driver}"></property>
+    </bean>
+<!--    配置事務管理器-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+<!--    開啟事務的註解驅動-->
+    <tx:annotation-driven transaction-manager="transactionManager"></tx:annotation-driven>
+<!--    以下配置為spring整合mybatis的配置-->
+<!--    配置用於創建sqlSessionFactory的工廠bean-->
+    <bean class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="configLocation" value="classpath:mybatis-config.xml"></property>     <!-- 設置mybatis配置文件位置 -->
+        <property name="dataSource" ref="dataSource"></property>    <!-- 設置數據源 -->
+        <property name="typeAliasesPackage" value="com.shung.pojo"></property>  <!--設置類型別名所對應的包-->
+    </bean>
+<!--    配置mapper接口的掃瞄-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.shung.mapper"></property>
+    </bean>
+
+
+</beans>
