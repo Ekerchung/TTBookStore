@@ -1,10 +1,102 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>首頁</title>
-</head>
-<body>
-<h1>首頁</h1>
-</body>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>天天來網路書店</title>
+    <!--    引用公共資源css、js-->
+        <div th:insert="pages/common/common_resource :: common_resource"></div>
+        <script type="text/javascript">
+            $(function (){
+                $("#btn_login").click(function (){
+                    window.location("pages/user/login.jsp");
+
+                })
+
+                //使用ajax方法將商品加入購物車
+                $(".addToCart").click(function (){
+                    var bookId = $(this).attr("bookId");
+                    $.getJSON("${basePath}cartServlet","action=ajaxAddItem&id=" + bookId,function (data){
+                        $("#btn_cart").text("購物車(" + data.totalCount + ")")
+                    })
+                })
+            })
+
+        </script>
+    </head>
+    <body>
+        <div id="header">
+    <!--        引用登入條login_bar-->
+            <span th:replace="pages/common/login_bar :: login_bar"></span>
+        </div>
+
+        <div id="main">
+            <div class="book_cond">
+                <form th:action="@{/book/page/search/1}" method="get">
+                    價格：<input id="minPrice" type="number" name="minPrice" th:value="${minPrice} ?: ''">元
+                    ~<input id="maxPrice" type="number" name="maxPrice" th:value="${maxPrice} ?: ''">元
+                    <input type="submit" value="查詢">
+                </form>
+            </div>
+
+
+            <div id="book">
+                <div class="book_list" th:each="book : ${page.list}">
+                    <div class="img_div">
+                        <img class="book_img" alt="" th:src="@{'/' + ${book.bImgpath}}"/>
+                    </div>
+                    <div class="book_info">
+                        <div class="book_name">
+                            <span class="sp_book_name" th:text="${book.bName}"></span>
+                        </div>
+                        <div></div>
+                        <div class="book_author">
+                            <span class="sp1">作者：</span>
+                            <span class="sp2" th:text="${book.bAuthor}"></span>
+                        </div>
+                        <div class="book_price">
+                            <span class="sp1">定價：</span>
+                            <span class="sp2" th:text="${book.bPrice}"></span>
+                        </div>
+                        <div class="book_sales">
+                            <span class="sp1">銷量：</span>
+                            <span class="sp2" th:text="${book.bSales}"></span>
+                        </div>
+                        <div class="book_amount">
+                            <span class="sp1">庫存：</span>
+                            <span class="sp2" th:text="${book.bStoke}"></span>
+                        </div>
+                        <button bookId = ${book.bId} class="addToCart">加入購物車</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="page_nav">
+            <tr>
+                <td colspan="6">
+                            <span th:if="${page.hasPreviousPage}">
+                                <a th:href="@{/book/page/1}">首页</a>
+                                <a th:href="@{'/book/page/'+${page.prePage}}">上一页</a>
+                            </span>
+                    <span th:each="num : ${page.navigatepageNums}">
+                                <a th:if="${page.pageNum==num}"
+                                   th:href="@{'/book/page/'+${num}}" th:text="'['+${num}+']'" style="color:red;"></a>
+                                <a th:if="${page.pageNum!=num}"
+                                   th:href="@{'/book/page/'+${num}}" th:text="${num} "></a>
+                            </span>
+                    <span th:if="${page.hasNextPage}">
+                                <a th:href="@{'/book/page/'+${page.nextPage}}">下一页</a>
+                                <a th:href="@{'/book/page/'+${page.pages}}">末页</a>
+                            </span>
+                </td>
+            </tr>
+        </div>
+        <br><br>
+
+        <!--    <%&#45;&#45;        靜態包含分頁條&#45;&#45;%>-->
+        <!--    <%@ include file="/pages/common/page_nav.jsp"%>-->
+
+
+    <!--    靜態包含末尾頁面-->
+        <div th:insert="pages/common/footer :: footer"></div>
+    </body>
 </html>
