@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <div th:fragment="login_bar">
+<!--        <a th:href="@{/}"><img class="book_logo_img" th:src="@{/static/img/Books_logo.jpg}"></a>-->
+        <span th:if="${session.login?.username} == null">
+            <span><a th:href="@{/}"><button id="btn_indexpage">首頁</button></a></span>
+            <span>|</span>
+            <span><a th:href="@{/to/login}"><button id="btn_login">登入/註冊</button></a></span>
+            <span>|</span>
+            <span><a th:href="@{/to/cart}"><button id="btn_cart" th:text="'購物車(' + (${session.cart?.items} ?: '0') + ')'"></button></a></span>
+        </span>
+
+        <span th:if="${session.login?.username} != null">
+            <span><a th:href="@{/}"><button id="btn_indexpage" th:text="首頁"></button></a></span>
+            <span>|</span>
+            <span id="btn_loginname" th:text="'會員(' + ${session.login?.username} + ')'"></span>
+            <span>|</span>
+            <span th:if="1 == ${session.login?.role}">
+                <span><a th:href="@{/to/manager}"><button class="btn_manager" th:text="後台管理"></button></a></span>
+                <span>|</span>
+            </span>
+            <span><button class="btn_manager" onclick="location.href='orderServlet?action=page';">我的訂單</button></span>
+            <span>|</span>
+            <span><a th:href="@{/to/cart}"><button id="btn_cart" th:text="'購物車(' + (${session.cart?.items} ?: '0') + ')'"></button></a></span>
+            <span>|</span>
+            <span><a th:href="@{/user/logout}"><button id="btn_logout" th:text="登出"></button></a></span>
+        </span>
+    </div>
+</html>

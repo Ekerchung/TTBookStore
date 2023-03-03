@@ -31,7 +31,9 @@
 <!--    配置默認servlet處理靜態資源-->
     <mvc:default-servlet-handler/>
 <!--    配置訪問首頁的視圖控制器-->
-<!--    <mvc:view-controller path="/" view-name="index"></mvc:view-controller>-->
+    <mvc:view-controller path="/to/login" view-name="pages/user/login"></mvc:view-controller>
+    <mvc:view-controller path="/to/regist" view-name="pages/user/regist"></mvc:view-controller>
+    <mvc:view-controller path="/to/cart" view-name="pages/cart/cart"></mvc:view-controller>
 <!--    配置註解驅動-->
     <mvc:annotation-driven/>
 </beans>
