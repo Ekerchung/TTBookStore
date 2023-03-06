@@ -16,35 +16,36 @@
     </script>
 
 </head>
-<body>
-<div id="login_header">
-    <a th:href="@{/}"><img class="book_logo_img" th:src="@{/static/img/Books_logo.jpg}"/></a>
-</div>
+    <body>
+        <div id="login_header">
+            <a th:href="@{/}"><img class="book_logo_img" th:src="@{/static/img/Books_logo.jpg}"/></a>
+        </div>
 
-<div id="content">
-    <div class="login_form">
-        <div class="login_title">會員登入</div>
-        <div class="msg_cont">
-            <b></b>
-            <span class="errormsg" th:text="${errormsg} ? ${errormsg} : '請輸入帳號密碼'">
-            </span>
+        <div id="content">
+            <div class="login_form">
+                <div class="login_title">會員登入</div>
+                <div class="msg_cont">
+                    <b></b>
+                    <span class="errormsg" th:text="${errormsg} ? ${errormsg} : '請輸入帳號密碼'">
+                    </span>
+                </div>
+                <div class="form">
+                    <form th:action="@{/user/login}" method="post">
+        <!--                <input type="hidden" name="action" value="login">-->
+                        <input class="itxt" type="text" placeholder="會員帳號" name="username" id="username" th:value="${username}"><br>
+                        <input class="itxt" type="password" placeholder="會員密碼" name="password" id="password"><br>
+                        <input class="verification_code" type="text" placeholder="請輸入驗證碼" name="code" id="code">
+                        <img class="code_img" th:src="@{/kaptcha.jpg}"><br>
+                        <input type="submit" value="登入" id="loginbuttom">
+                    </form>
+                </div>
+                <div class="regist_account">
+                    <span>還不是會員?</span>
+                    <span><a th:href="@{/to/regist}" class="regist_link">立即註冊</a></span>
+                </div>
+            </div>
         </div>
-        <div class="form">
-            <form th:action="@{/user/login}" method="post">
-<!--                <input type="hidden" name="action" value="login">-->
-                <input class="itxt" type="text" placeholder="會員帳號" name="username" id="username" th:value="${username}"><br>
-                <input class="itxt" type="password" placeholder="會員密碼" name="password" id="password"><br>
-                <input class="verification_code" type="text" placeholder="請輸入驗證碼" name="code" id="code">
-                <img class="code_img" th:src="@{/kaptcha.jpg}"><br>
-                <input type="submit" value="登入" id="loginbuttom">
-            </form>
-        </div>
-        <div class="regist_account">
-            <span>還不是會員?</span>
-            <span><a th:href="@{/to/regist}" class="regist_link">立即註冊</a></span>
-        </div>
-    </div>
-</div>
-
-</body>
+        <!--    靜態包含末尾頁面-->
+        <div th:insert="pages/common/footer :: footer"></div>
+    </body>
 </html>

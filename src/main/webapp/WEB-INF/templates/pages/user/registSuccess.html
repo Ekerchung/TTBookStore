@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>天天來網路書店-會員註冊</title>
+    <!--    引用公共資源css、js-->
+    <div th:insert="pages/common/common_resource :: common_resource"></div>
+</head>
+<body>
+    <div id="login_header">
+        <a th:href="@{/}"><img class="book_logo_img" th:src="@{/static/img/Books_logo.jpg}"/></a>
+    </div>
+
+    <div id="content">
+        <div class="regist_success">
+            <span class="regist_success_sp1">註冊成功!!&nbsp&nbsp&nbsp&nbsp</span>
+            <span><a th:href="@{/to/login}" th:text="點此登入" class="regist_success_sp2"></a></span>
+        </div>
+    </div>
+    <!--    靜態包含末尾頁面-->
+    <div th:insert="pages/common/footer :: footer"></div>
+</body>
+</html>

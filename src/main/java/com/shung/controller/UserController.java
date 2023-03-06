@@ -1,5 +1,6 @@
 package com.shung.controller;
 
+import com.google.gson.Gson;
 import com.shung.pojo.User;
 import com.shung.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +11,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.util.WebUtils;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.security.PrivateKey;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description: User的Controller，用來接受請求及響應瀏覽器
@@ -65,4 +71,72 @@ public class UserController {
         //重定向回首頁
         return "redirect:/";
     }
+
+    @RequestMapping(value = "/to/user/checkUsername",method = RequestMethod.GET)
+    public void checkUsername(String username, HttpServletResponse resp) throws ServletException, IOException {
+        //1. 獲取輸入的參數username
+//        String username = req.getParameter("username");
+        //2. 調用userService.existUsername方法確認username是否存在
+        boolean existUsername = userService.existUsername(username);
+        //3. 將返回的結果封裝到Map對象
+        Map<String,Object> resultMap = new HashMap<>();
+        resultMap.put("existUsername",existUsername);
+        //4. 將Map對象回傳給客戶端
+        Gson gson = new Gson();
+        String json = gson.toJson(resultMap);
+        System.out.println(json);
+        resp.getWriter().write(json);
+
+    }
+
+    @RequestMapping(value = "/user/regist",method = RequestMethod.POST)
+    public String regist(Model model,User user,String checkpassword,HttpServletRequest req){
+        //獲取驗證碼
+        String token = (String) req.getSession().getAttribute("KAPTCHA_SESSION_KEY");
+        //刪除session中的驗證碼，避免重複提交
+        req.getSession().removeAttribute("KAPTCHA_SESSION_KEY");
+        //獲取輸入的驗證碼
+        String inputCode = (String) req.getParameter("code");
+        //確認輸入資料是否非空
+        if(user.getUsername() == null || user.getPassword() == null || user.getEmail() == null || checkpassword == null || inputCode == null ){
+            model.addAttribute("errormsg","所有欄位不可為空!!");
+            return "/pages/user/regist";
+        }
+        //確認驗證碼是否正確
+        if(!inputCode.equals(token)){
+            model.addAttribute("errormsg","驗證碼錯誤!!");
+            return "/pages/user/regist";
+        }
+        //確認密碼確認是否正確
+        if(!user.getPassword().equals(checkpassword)){
+            model.addAttribute("errormsg","請確認密碼!!");
+            return "/pages/user/regist";
+        }
+        //確認用戶名是否存在
+        boolean exist = userService.existUsername(user.getUsername());
+        String username = user.getUsername();
+        if(exist){
+            //若用戶名已存在，返回註冊頁
+            model.addAttribute("errormsg","用戶名已存在!!");
+            return "/pages/user/regist";
+        }else if(!user.getUsername().matches("^[a-zA-Z][a-zA-Z0-9_]{4,15}$")){
+            System.out.println(username.matches("^[a-zA-Z][a-zA-Z0-9_]{4,15}$"));
+            //若用戶名不符合規定，返回註冊頁
+            model.addAttribute("errormsg","用戶名不符合規定!!");
+            return "/pages/user/regist";
+        }else if(!user.getPassword().matches("^[a-zA-Z]\\w{5,17}$")){
+            //若密碼不符合規定，返回註冊頁
+            model.addAttribute("errormsg","密碼不符合規定!!");
+            return "/pages/user/regist";
+        }else if(!user.getEmail().matches("^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$")){
+            //若信箱不符合規定，返回註冊頁
+            model.addAttribute("errormsg","信箱不合法!!");
+            return "/pages/user/regist";
+        }
+            //調用userService.userRegist保存用戶註冊資訊
+            userService.userRegist(user);
+            return "/pages/user/registSuccess";
+
+    }
+
 }

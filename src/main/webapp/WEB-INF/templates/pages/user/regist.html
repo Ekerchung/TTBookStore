@@ -1,10 +1,77 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>天天來網路書店-會員註冊</title>
+
+    <!--    引用公共資源css、js-->
+    <div th:insert="pages/common/common_resource :: common_resource"></div>
+    <script type="text/javascript" th:src="@{/static/script/axios.min.js}"></script>
+    <script type="text/javascript" th:src="@{/static/script/vue.js}"></script>
+    <script>
+        // 使用ajax請求判斷用戶名是否可用
+        window.onload=function(){
+            var vue = new Vue({
+                el: "#checkregist",
+                data: {
+                    username:'',
+                    axioserrormsg:''
+                },
+                methods: {
+                    checkusername: function () {
+                        axios({
+                            method:"GET",
+                            url: "user/checkUsername",
+                            params: {
+                                username:vue.username
+                            }
+                        })
+                            .then(function (response) {
+                                // console.log(value);
+                                if(response.data.existUsername){
+                                    vue.axioserrormsg="用戶名已存在"
+                                }else{
+                                    vue.axioserrormsg="用戶名可用"
+                                }
+                            })
+                            .catch(function (reason) {
+                                console.log(reason);
+                            });
+                    }
+                }
+            });
+        }
+    </script>
 </head>
-<body>
-<h1>regist</h1>
-</body>
+    <body>
+        <div id="login_header">
+            <a th:href="@{/}"><img class="book_logo_img" th:src="@{/static/img/Books_logo.jpg}"/></a>
+        </div>
+
+        <div id="content">
+            <div class="regist_form" id="checkregist">
+                <div>
+                    <span class="login_title">註冊</span>
+                    <span class="errormsg" th:text="${errormsg}" >{{errormsg}}</span>
+                </div>
+                <div class="form">
+                    <form th:action="@{/user/regist}" method="post">
+                        <input class="itxt" type="text" placeholder="會員帳號" name="username" v-model="username" @blur="checkusername"><span class="errormsg" >{{axioserrormsg}}</span>
+                        <input class="itxt" type="password" placeholder="會員密碼" name="password" id="password"><br>
+                        <input class="itxt" type="password" placeholder="確認密碼" name="checkpassword" id="checkpassword"><br>
+                        <input class="itxt" type="text" placeholder="電子信箱" name="email" id="email"><br>
+                        <input class="verification_code" type="text" placeholder="請輸入驗證碼" name="code" id="code">
+                        <img class="code_img" th:src="@{/kaptcha.jpg}"><br>
+                        <input type="submit" value="註冊" id="loginbuttom">
+                    </form>
+                </div>
+                <div class="regist_account">
+                    <span>已經有帳號了?</span>
+                    <span><a th:href="@{/to/login}" th:text="登入" class="login_link"></a></span>
+                </div>
+            </div>
+        </div>
+        <!--    靜態包含末尾頁面-->
+        <div th:insert="pages/common/footer :: footer"></div>
+    </body>
 </html>

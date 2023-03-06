@@ -13,4 +13,8 @@ import java.util.List;
  */
 public interface UserService {
     User userlogin(User user);
+
+    boolean existUsername(String username);
+
+    void userRegist(User user);
 }

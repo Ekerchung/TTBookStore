@@ -33,4 +33,22 @@ public class UserServiceImpl implements UserService {
         }
         return null;
     }
+
+    @Override
+    public boolean existUsername(String username) {
+        UserExample userExample = new UserExample();
+        userExample.createCriteria().andUsernameEqualTo(username);
+        List<User> users = userMapper.selectByExample(userExample);
+        if(users.isEmpty()){
+            return false;
+        }else {
+            return true;
+        }
+    }
+
+    @Override
+    public void userRegist(User user) {
+        //調用userMapper.insert()將註冊信息存入數據庫
+        int insert = userMapper.insertSelective(user);
+    }
 }
