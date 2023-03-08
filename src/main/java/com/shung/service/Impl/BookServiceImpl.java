@@ -48,4 +48,22 @@ public class BookServiceImpl implements BookService{
 //        返回分頁信息
         return page;
     }
+
+    @Override
+    public void deleteBookById(Integer id) {
+        bookMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public Book queryBookById(Integer bId) {
+        Book book = bookMapper.selectByPrimaryKey(bId);
+        return book;
+    }
+
+    @Override
+    public void updateBook(Book book) {
+        //調用bookMapper.updateByPrimaryKeySelective(book)更新圖書信息
+
+        bookMapper.updateByPrimaryKeySelective(book);
+    }
 }

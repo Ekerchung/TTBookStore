@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>天天來網路書店-後台管理</title>
+    <!--    引用公共資源css、js-->
+    <div th:insert="pages/common/common_resource :: common_resource"></div>
+</head>
+<body>
+    <div id="manager_header">
+        <a th:href="@{/}"><img class="book_logo_img" th:src="@{/static/img/Books_logo.jpg}"/></a>
+        <span class="wel_word" th:text="後台管理系統"></span>
+<!--        靜態包含後台管理頭部頁面-->
+        <div th:insert="pages/common/manager_bar :: manager_bar"></div>
+    </div>
+
+    <div id="main">
+        <h1 id="manager_welcome" th:text="歡迎管理員進入後台管理系統"></h1>
+    </div>
+
+</body>
+</html>

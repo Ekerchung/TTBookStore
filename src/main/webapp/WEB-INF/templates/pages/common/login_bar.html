@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
     <div th:fragment="login_bar">
-<!--        <a th:href="@{/}"><img class="book_logo_img" th:src="@{/static/img/Books_logo.jpg}"></a>-->
         <span th:if="${session.login?.username} == null">
             <span><a th:href="@{/}"><button id="btn_indexpage">首頁</button></a></span>
             <span>|</span>
