@@ -13,4 +13,12 @@ public interface BookService {
     PageInfo<Book> getBookList(Integer pageNum);
 
     PageInfo<Book> getBookListBySort(Integer pageNum, Integer minPrice, Integer maxPrice);
+
+    void deleteBookById(Integer id);
+
+    Book queryBookById(Integer bId);
+
+    void updateBook(Book book);
+
+    void addBook(Book book);
 }

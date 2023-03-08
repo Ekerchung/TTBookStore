@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>天天來網路書店-編輯圖書</title>
+    <!--    引用公共資源css、js-->
+    <div th:insert="pages/common/common_resource :: common_resource"></div>
+
+</head>
+<body>
+    <div id="manager_header">
+        <a th:href="@{/}"><img class="book_logo_img" th:src="@{/static/img/Books_logo.jpg}"/></a>
+        <!--        靜態包含後台管理頭部頁面-->
+        <div th:insert="pages/common/manager_bar :: manager_bar"></div>
+    </div>
+    <div id="main">
+        <form th:action="@{/book}" method="post">
+            <div th:if="${book?.bName} ne null">
+            <input type="hidden" name="_method" value="PUT">
+            <input type="hidden" name="pageNum" th:value="${pageNum}">
+            <input type="hidden" name="bId" th:value="${book.bId}">
+            </div>
+            <table>
+                <Tr>
+                    <th>書名</th>
+                    <th>作者</th>
+                    <th>價格</th>
+                    <th>銷量</th>
+                    <th>庫存</th>
+                    <th colspan="2">操作</th>
+                </Tr>
+                <tr>
+                    <td><input type="text" name="bName" th:value="${book?.bName} ?: ''"></td>
+                    <td><input type="text" name="bAuthor" th:value="${book?.bAuthor} ?: ''"></td>
+                    <td><input type="text" name="bPrice" th:value="${book?.bPrice} ?: ''"></td>
+                    <td><input type="text" name="bSales" th:value="${book?.bSales} ?: ''"></td>
+                    <td><input type="text" name="bStoke" th:value="${book?.bStoke} ?: ''"></td>
+                    <td colspan="2"><input type="submit" th:value="${book?.bName} ne null? '提交修改':'新增'"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td colspan="2" th:if="${book?.bName} ne null"><a th:href="@{'/book/manager/page/' + ${pageNum}}">返回圖書管理</a></td>
+                    <td colspan="2" th:if="${book?.bName} eq null"><a th:href="@{'/book/manager/page/1'}">返回圖書管理</a></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</body>
+</html>

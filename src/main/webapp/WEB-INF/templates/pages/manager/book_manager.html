@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>天天來網路書店-圖書管理</title>
+    <!--    引用公共資源css、js-->
+    <div th:insert="pages/common/common_resource :: common_resource"></div>
+    <script type="text/javascript" th:src="@{/static/script/axios.min.js}"></script>
+    <script type="text/javascript" th:src="@{/static/script/vue.js}"></script>
+
+</head>
+<body>
+    <div id="manager_header">
+        <a th:href="@{/}"><img class="book_logo_img" th:src="@{/static/img/Books_logo.jpg}"/></a>
+        <!--        靜態包含後台管理頭部頁面-->
+        <div th:insert="pages/common/manager_bar :: manager_bar"></div>
+    </div>
+
+
+    <div id="main">
+        <table>
+            <Tr>
+                <th>ID</th>
+                <th>書名</th>
+                <th>作者</th>
+                <th>價格</th>
+                <th>銷量</th>
+                <th>庫存</th>
+                <th colspan="2">操作</th>
+            </Tr>
+                <tr th:each="book : ${page.list}">
+                    <td th:text="${book.bId}"></td>
+                    <td th:text="${book.bName}"></td>
+                    <td th:text="${book.bAuthor}"></td>
+                    <td th:text="${book.bPrice}"></td>
+                    <td th:text="${book.bSales}"></td>
+                    <td th:text="${book.bStoke}"></td>
+                    <td><a th:href="@{'/book/' + ${book.bId} + '/' + ${pageNum}}">修改</a></td>
+                    <td><a @click="deletebook()" class="deleteClass" th:href="@{'/book/' + ${book.bId}}">刪除</a></td>
+                </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><a th:href="@{/to/book/add}">添加圖書</a></td>
+            </tr>
+        </table>
+        <!--發送delete請求的隱藏表單-->
+        <form id="delete_form" method="post">
+            <input type="hidden" name="_method" value="delete">
+            <input type="hidden" name="pageNum" th:value="${page.pageNum}">
+        </form>
+    </div>
+    <!--        靜態包含後台管理頭部頁面-->
+    <div th:insert="pages/common/page_nav :: page_nav"></div>
+
+    <script type="text/javascript">
+
+        var vue = new Vue({
+            el:'#main',
+            methods:{
+                //event表示當前事件
+                deletebook: function (){
+                    if(confirm("確定要刪除?")) {
+
+                        //通過document.getElementById()獲取表單標籤
+                        var form = document.getElementById("delete_form");
+                        //將觸發事件的href屬性賦給form的action屬性
+                        form.action = event.target.href;
+                        //提交表單
+                        form.submit();
+                    }
+                        //阻止默認的超連結功能
+                        event.preventDefault();
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>

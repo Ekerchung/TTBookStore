@@ -71,26 +71,8 @@
                 </div>
             </div>
         </div>
-        <div id="page_nav">
-            <tr>
-                <td colspan="6">
-                            <span th:if="${page.hasPreviousPage}">
-                                <a th:href="@{/book/page/1}">首页</a>
-                                <a th:href="@{'/book/page/'+${page.prePage}}">上一页</a>
-                            </span>
-                    <span th:each="num : ${page.navigatepageNums}">
-                                <a th:if="${page.pageNum==num}"
-                                   th:href="@{'/book/page/'+${num}}" th:text="'['+${num}+']'" style="color:red;"></a>
-                                <a th:if="${page.pageNum!=num}"
-                                   th:href="@{'/book/page/'+${num}}" th:text="${num} "></a>
-                            </span>
-                    <span th:if="${page.hasNextPage}">
-                                <a th:href="@{'/book/page/'+${page.nextPage}}">下一页</a>
-                                <a th:href="@{'/book/page/'+${page.pages}}">末页</a>
-                            </span>
-                </td>
-            </tr>
-        </div>
+        <!--        靜態包含分頁條-->
+        <div th:insert="pages/common/page_nav :: page_nav"></div>
         <br><br>
     <!--    靜態包含末尾頁面-->
         <div th:insert="pages/common/footer :: footer"></div>

@@ -33,6 +33,10 @@
 <!--    配置訪問首頁的視圖控制器-->
     <mvc:view-controller path="/to/login" view-name="pages/user/login"></mvc:view-controller>
     <mvc:view-controller path="/to/regist" view-name="pages/user/regist"></mvc:view-controller>
+    <mvc:view-controller path="/to/manager" view-name="pages/manager/manager"></mvc:view-controller>
+    <mvc:view-controller path="/to/manager/order" view-name="pages/manager/orderlist"></mvc:view-controller>
+    <mvc:view-controller path="/to/manager/book" view-name="pages/manager/book_manager"></mvc:view-controller>
+    <mvc:view-controller path="/to/book/add" view-name="pages/manager/book_edit"></mvc:view-controller>
     <mvc:view-controller path="/to/cart" view-name="pages/cart/cart"></mvc:view-controller>
 <!--    配置註解驅動-->
     <mvc:annotation-driven/>
