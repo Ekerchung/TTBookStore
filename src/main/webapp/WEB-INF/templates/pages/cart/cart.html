@@ -3,8 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+<head>
+    <title>天天來網路書店-購物車</title>
+
+    <!--    引用公共資源css、js-->
+    <div th:insert="pages/common/common_resource :: common_resource"></div>
+    <script type="text/javascript">
+        $(function () {
+            $(".clearCartItem").click(function () {
+                return confirm("確定要清空購物車?");
+            });
+
+            $(".updateCount").change(function () {
+                //獲取商品ID
+                var id = $(this).attr("bookId");
+                //獲取修改後的商品數量
+                var count = this.value;
+                //指向cartServlet中的updateCount方法，並提供參數id & count
+                location.href="${pageScope.basePath}/cartServlet?action=updateCount&id=" + id + "&count=" + count;
+            });
+
+            $("#btn_checkout").click(function () {
+                //指向orderServlet中的createOrder方法
+                location.href="${pageScope.basePath}/orderServlet?action=createOrder";
+            });
+
+
+        });
+    </script>
+
 </head>
 <body>
-cart
+
+    <div id="header">
+        <a th:href="@{/}"><img class="book_logo_img" th:src="@{/static/img/Books_logo.jpg}"></a>
+        <!--        引用登入條login_bar-->
+        <span th:replace="pages/common/login_bar :: login_bar"></span>
+    </div>
+
+
+    <div id="main_cartlist">
+        <span class="empty_cart" th:if="${session.cart?.items} eq null" th:text="目前購物車內沒有商品"></span>
+
+        <div th:if="${session.cart?.items} ne null">
+            <table>
+                <Tr>
+                    <th colspan="2">商品明細</th>
+                    <th>價格</th>
+                    <th>數量</th>
+                    <th>小計</th>
+                    <th>操作</th>
+                </Tr>
+                <div th:each="item : ${sessionScope.cart.items}">
+                    <tr>
+                        <td><img class="cart_img" alt="" th:src="${item.value.imgPath}"/></td>
+                        <td th:value="${item.value.name}"></td>
+                        <td th:value="${item.value.price}"></td>
+                        <td>
+                            <input class="updateCount" th:bookId="${item.value.id}" type="text" th:value="${item.value.count}">
+                        </td>
+                        <td th:value="${item.value.totalPrice}"></td>
+                        <td><a class="deleteCartItem" th:href="${pageScope.basePath}cartServlet?action=deleteItem&id=${entry.value.id}" th:text="刪除"></a></td>
+                    </tr>
+                </div>
+                <tr style="height: 100px">
+                    <td><a class="clearCartItem" th:href="${pageScope.basePath}cartServlet?action=clear" th:text="清空購物車"></a></td>
+                    <td colspan="2" class="cart_span" th:value="'共' + ' ' + ${sessionScope.cart.totalCount} + ' ' + '件商品'"></td>
+                    <td colspan="2" class="cart_span" th:value="總金額"><span id="totalPrice" th:text="'$' + ${sessionScope.cart.totalPrice} + '元'"></span></td>
+                    <td><input type="button" id="btn_checkout" value="去買單"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <!--    靜態包含末尾頁面-->
+    <div th:insert="pages/common/footer :: footer"></div>
 </body>
 </html>

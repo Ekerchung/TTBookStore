@@ -19,4 +19,6 @@ public interface BookService {
     Book queryBookById(Integer bId);
 
     void updateBook(Book book);
+
+    void addBook(Book book);
 }

@@ -212,4 +212,12 @@ public class BookController {
         //返回原管理頁面
         return "redirect:/book/manager/page/" + pageNum;
     }
+
+    @RequestMapping(value = "/book", method = RequestMethod.POST)
+    public String addBook(Book book){
+        //調用bookService.addBook(book)新增圖書
+        bookService.addBook(book);
+        //返回管理頁面
+        return "redirect:/book/manager/page/1";
+    }
 }
