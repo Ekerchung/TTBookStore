@@ -5,23 +5,9 @@
         <title>天天來網路書店</title>
     <!--    引用公共資源css、js-->
         <div th:insert="pages/common/common_resource :: common_resource"></div>
-        <script type="text/javascript">
-            $(function (){
-                $("#btn_login").click(function (){
-                    window.location("pages/user/login.jsp");
+        <script type="text/javascript" th:src="@{/static/script/axios.min.js}"></script>
+        <script type="text/javascript" th:src="@{/static/script/vue.js}"></script>
 
-                })
-
-                //使用ajax方法將商品加入購物車
-                $(".addToCart").click(function (){
-                    var bookId = $(this).attr("bookId");
-                    $.getJSON("${basePath}cartServlet","action=ajaxAddItem&id=" + bookId,function (data){
-                        $("#btn_cart").text("購物車(" + data.totalCount + ")")
-                    })
-                })
-            })
-
-        </script>
     </head>
     <body>
         <div id="header">
@@ -38,7 +24,6 @@
                     <input type="submit" value="查詢">
                 </form>
             </div>
-
 
             <div id="book">
                 <div class="book_list" th:each="book : ${page.list}">
@@ -66,7 +51,9 @@
                             <span class="sp1">庫存：</span>
                             <span class="sp2" th:text="${book.bStoke}"></span>
                         </div>
-                        <button bookId = ${book.bId} class="addToCart">加入購物車</button>
+                        <div>
+                        <button id="addToCart" th:attr="bookId=${book.bId}" class="addToCart">加入購物車</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -76,5 +63,18 @@
         <br><br>
     <!--    靜態包含末尾頁面-->
         <div th:insert="pages/common/footer :: footer"></div>
+
+        <script type="text/javascript">
+            //     //使用ajax方法將商品加入購物車
+                $(".addToCart").click(function (){
+                    var bookId = $(this).attr("bookId");
+                    $.getJSON(
+                        "cart/add",
+                        "bId=" + bookId,
+                        function (data){
+                        $("#btn_cart").text("購物車(" + data.totalCount + ")")
+                    })
+                });
+        </script>
     </body>
 </html>

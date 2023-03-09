@@ -189,8 +189,25 @@ div{
 .clearCartItem{
 	font-size: 20px;
 }
-.updateCount{
-	width: 30px;
+/*.updateCount{*/
+/*	width: 30px;*/
+/*	text-align: center;*/
+/*}*/
+
+.count {
+	display: inline-block;
+	width: 25px;
+	height: 25px;
+	border: 1px solid #ccc;
+	line-height: 22px;
+	text-align: center;
+	cursor: pointer;
+}
+.updateCount {
+	margin: 0 10px;
+	display: inline-block;
+	width: 40px;
+	height: 25px;
 	text-align: center;
 }
 .empty_cart{
