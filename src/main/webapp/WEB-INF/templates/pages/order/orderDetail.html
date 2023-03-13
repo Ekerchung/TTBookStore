@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>天天來網路書店-訂單明細</title>
+    <!--    引用公共資源css、js-->
+    <div th:insert="pages/common/common_resource :: common_resource"></div>
+</head>
+<body>
+
+    <div id="header">
+        <a th:href="@{/}"><img class="book_logo_img" th:src="@{/static/img/Books_logo.jpg}"></a>
+        <!--        引用登入條login_bar-->
+        <span th:replace="pages/common/login_bar :: login_bar"></span>
+    </div>
+
+
+    <div id="main_orderDetail">
+
+        <span th:if="${orderItems.size} == 0"  class="empty_cart">此訂單沒有商品內容，請聯繫客服人員</span>
+
+        <div th:if="${orderItems.size} != 0">
+            <table>
+                <tr>
+                    <th colspan="6" th:text="|訂單編號：${orderId}|"></th>
+                </tr>
+
+                    <tr th:each="orderItem : ${orderItems}">
+                        <td><img class="orderDetail_img" alt="" th:src="@{'/' + ${orderItem.imgPath}}"/></td>
+                        <td colspan="2" th:text="${orderItem.name}">
+                            <br><br>
+                        </td>
+                        <td colspan="2" th:text="|x${orderItem.count}|"></td>
+                        <td style="text-align: center" th:text="'$' + ${orderItem.totalPrice}"></td>
+                    </tr>
+                <tr>
+                    <td colspan="6" style="text-align: right"><b>訂單金額：</b><span style="text-align: right;font-size: 24px; color: red " th:text="'$' + ${orderPrice}"></span></td>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+<!--    靜態包含末尾頁面-->
+    <div th:insert="pages/common/footer :: footer"></div>
+
+</body>
+</html>

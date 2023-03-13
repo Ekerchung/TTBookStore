@@ -26,15 +26,14 @@ import java.util.Enumeration;
 
 
 /*
- * 查詢所有的圖書信息 -->/book -->get
- * 查詢自訂價格範圍的圖書信息 -->/book/1 -->get
- * 查詢圖書的分頁信息 -->/book/page/1 -->get
- * 查詢自訂價格範圍的圖書分頁信息 -->/book/page/1/2/3 -->get
- * 根據id查詢圖書信息 -->/book/1 -->get
- * 跳轉到添加頁面 -->/to/add -->get
- * 添加圖書信息 -->/book -->post
- * 修改圖書信息 -->/book -->put
- * 刪除圖書信息 -->/book -->delete
+ * 首頁的圖書分頁信息 -->/ -->GET
+ * 圖書的分頁信息 -->/book/page/{pageNum} -->GET
+ * 管理圖書的分頁信息 -->/book/manager/page/{pageNum} -->GET
+ * 查詢自訂價格範圍的圖書信息 -->/book/page/search/{pageNum} -->GET
+ * 刪除圖書信息 -->/book/{bId} -->DELETE
+ * 根據id查詢圖書信息 -->/book/{bId}/{pageNum} -->GET
+ * 修改圖書信息 -->/book -->PUT
+ * 添加圖書信息 -->/book -->POST
  */
 @Controller
 public class BookController {
@@ -63,13 +62,6 @@ public class BookController {
         model.addAttribute("mappingUrl",mappingUrl);
         return "index";
     }
-//    @RequestMapping(value ="/book",method = RequestMethod.GET)
-//    public String queryBooks(Model model){
-//        Integer pageNum = 1;
-//        PageInfo<Book> page = bookService.getBookList(pageNum);
-//        model.addAttribute("page",page);
-//        return "/pages/manager/book_manager";
-//    }
 
     /**
      * @titile: queryBooks
@@ -213,6 +205,14 @@ public class BookController {
         return "redirect:/book/manager/page/" + pageNum;
     }
 
+    /**
+     * @titile: addBook
+     * @description: 添加圖書信息
+     * @param null
+     * @return: book 保存圖書信息的Book類容器
+     * @author: Eker
+     * @date: 2023/3/13 下午 12:17
+     */
     @RequestMapping(value = "/book", method = RequestMethod.POST)
     public String addBook(Book book){
         //調用bookService.addBook(book)新增圖書

@@ -29,9 +29,10 @@ import java.util.Map;
  */
 
 /*
- * 使用者登入 -->/user/login -->post
- * 使用者登出 -->/user/1ogout -->put
- * 註冊功能 -->/user -->post
+ * 使用者登入 -->/user/login -->POST
+ * 使用者登出 -->/user/1ogout -->GET
+ * Ajax驗證用戶名稱是否可用 -->/to/user/checkUsername -->GET
+ * 註冊功能 -->/user/regist -->POST
  */
 @Controller
 public class UserController {
@@ -64,6 +65,15 @@ public class UserController {
         }
     }
 
+    /**
+     * @titile: logout
+     * @description: 用戶登出
+     * @param model springMVC內建的傳參類
+     * @return: String 請求轉發的分頁名
+     * @author: Eker
+     * @date: 2023/3/13 上午 11:46
+     */
+
     @RequestMapping(value = "/user/logout",method = RequestMethod.GET)
     public String logout(HttpServletRequest req,Model model){
         //銷毀session中的資料
@@ -72,16 +82,21 @@ public class UserController {
         return "redirect:/";
     }
 
+    /**
+     * @titile: checkUsername
+     * @description: Ajax驗證用戶名稱是否可用
+     * @param username 用戶名
+     * @author: Eker
+     * @date: 2023/3/13 上午 11:44
+     */
     @RequestMapping(value = "/to/user/checkUsername",method = RequestMethod.GET)
     public void checkUsername(String username, HttpServletResponse resp) throws ServletException, IOException {
-        //1. 獲取輸入的參數username
-//        String username = req.getParameter("username");
-        //2. 調用userService.existUsername方法確認username是否存在
+        //1. 調用userService.existUsername方法確認username是否存在
         boolean existUsername = userService.existUsername(username);
-        //3. 將返回的結果封裝到Map對象
+        //2. 將返回的結果封裝到Map對象
         Map<String,Object> resultMap = new HashMap<>();
         resultMap.put("existUsername",existUsername);
-        //4. 將Map對象回傳給客戶端
+        //3. 將Map對象回傳給客戶端
         Gson gson = new Gson();
         String json = gson.toJson(resultMap);
         System.out.println(json);
@@ -89,6 +104,16 @@ public class UserController {
 
     }
 
+    /**
+     * @titile: regist
+     * @description: 後台驗證註冊訊息並保存到資料庫
+     * @param model springMVC內建的傳參類
+     * @param user 作為保存註冊訊息的User類容器
+     * @param checkpassword 確認輸入密碼
+     * @return: String 請求轉發的分頁名
+     * @author: Eker
+     * @date: 2023/3/13 上午 11:47
+     */
     @RequestMapping(value = "/user/regist",method = RequestMethod.POST)
     public String regist(Model model,User user,String checkpassword,HttpServletRequest req){
         //獲取驗證碼

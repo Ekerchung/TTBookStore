@@ -1,5 +1,7 @@
 package com.shung.pojo;
 
+import org.springframework.stereotype.Component;
+
 import java.math.BigDecimal;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -10,7 +12,7 @@ import java.util.Map;
  * @date: 2023/3/8 下午 05:02
  * @version: V1.0
  */
-
+@Component
 public class Cart {
     //創建一個Map類的購物車對象
     private Map<Integer,CartItem> items = new LinkedHashMap<Integer,CartItem>();

@@ -1,22 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>天天來網路書店-訂單管理</title>
+
     <!--    引用公共資源css、js-->
     <div th:insert="pages/common/common_resource :: common_resource"></div>
+
 </head>
 <body>
 
-    <div id="manager_header">
-        <a th:href="@{/}"><img class="book_logo_img" th:src="@{/static/img/Books_logo.jpg}"/></a>
-        <!--        靜態包含後台管理頭部頁面-->
-        <div th:insert="pages/common/manager_bar :: manager_bar"></div>
+    <div id="header">
+        <a th:href="@{/}"><img class="book_logo_img" th:src="@{/static/img/Books_logo.jpg}"></a>
+        <!--        引用登入條login_bar-->
+        <span th:replace="pages/common/login_bar :: login_bar"></span>
     </div>
 
 
     <div id="main_orderlist">
-        <span class="empty_cart" th:if="${page.size} == 0">目前沒有訂單</span>
+
+        <span th:if="${page.size} == 0" class="empty_cart">目前沒有訂單</span>
 
         <div th:if="${page.size} != 0">
             <div th:each="order : ${page.list}">
@@ -33,16 +36,16 @@
                         <td colspan="2" th:text="${#dates.format(order.createtime, 'yyyy-MM-dd HH:mm:ss')}"></td>
                         <td>
                             <span th:switch="${order.status}">
-                                    <span th:case="0">未出貨</span>
-                                    <span th:case="1">已出貨</span>
-                                    <span th:case="2">訂單完成</span>
+                                <span th:case="0">未出貨</span>
+                                <span th:case="1">已出貨</span>
+                                <span th:case="2">訂單完成</span>
                             </span>
                         </td>
                         <td th:text="${order.price}"></td>
                         <td>
                             <a th:href="@{'/order/' + ${order.orderId} + '/' + ${order.price}}">訂單明細</a>
                             <span>|</span>
-                            <a th:href="@{'/order/deliver/' + ${order.orderId}}">發貨</a></td>
+                            <a th:href="@{'/order/receive/' + ${order.orderId}}">收貨</a>
                         </td>
                     </tr>
                 </table>
@@ -56,5 +59,6 @@
     <br><br>
     <!--    靜態包含末尾頁面-->
     <div th:insert="pages/common/footer :: footer"></div>
+
 </body>
 </html>

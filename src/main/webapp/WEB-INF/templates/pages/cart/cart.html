@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-<head>
     <title>天天來網路書店-購物車</title>
 
     <!--    引用公共資源css、js-->
     <div th:insert="pages/common/common_resource :: common_resource"></div>
+    <script type="text/javascript" th:src="@{/static/script/axios.min.js}"></script>
+    <script type="text/javascript" th:src="@{/static/script/vue.js}"></script>
     <script type="text/javascript">
         //使用"+"、"-"編輯購物車商品數量
         function editCart(bId , count){
@@ -26,10 +26,14 @@
                 var bId = $(this).attr("bookId");
                 //獲取修改後的商品數量
                 var count = this.value;
-                //指向cartServlet中的updateCount方法，並提供參數id & count
+                //指向CartController中的updateCount方法，並提供參數id & count
                 location.href="cart/update?bId=" + bId + "&count=" + count;
             });
 
+            $("#btn_checkout").click(function () {
+                //指向OrderController中的createOrder方法
+                location.href="order/add";
+            });
 
         });
     </script>

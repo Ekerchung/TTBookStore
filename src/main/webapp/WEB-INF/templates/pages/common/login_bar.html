@@ -18,9 +18,10 @@
                 <span><a th:href="@{/to/manager}"><button class="btn_manager" th:text="後台管理"></button></a></span>
                 <span>|</span>
             </span>
-            <span><button class="btn_manager" onclick="location.href='orderServlet?action=page';">我的訂單</button></span>
+            <span><a th:href="@{/order/page/1}"><button class="btn_manager" th:text="我的訂單"></button></a></span>
             <span>|</span>
             <span><a th:href="@{/to/cart}"><button id="btn_cart" th:text="'購物車(' + (${session.cart?.getTotalCount()} ?: '0') + ')'"></button></a></span>
+
             <span>|</span>
             <span><a th:href="@{/user/logout}"><button id="btn_logout" th:text="登出"></button></a></span>
         </span>

@@ -19,6 +19,16 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+    //ajax添加商品到購物車 --> '/**/cart/add -->GET
+/*
+ * 新增購物車 -->/to/cart -->GET
+ * 修改購物車內購物車商品項之數量 -->to/cart/update -->GET
+ * 清空購物車 -->/cart/clear -->GET
+ * 刪除購物車中之購物車商品項 -->/cart/delete/{id} -->GET
+ *
+ */
+
+
 /**
  * @Description: Cart的Controller，用來接受請求及響應瀏覽器
  * @author: Eker
@@ -28,7 +38,7 @@ import java.util.Map;
 @Controller
 public class CartController {
     @Autowired
-    BookService bookService;
+    private BookService bookService;
 
     /**
      * @titile: addToCart
@@ -38,7 +48,7 @@ public class CartController {
      * @author: Eker
      * @date: 2023/3/9 下午 02:25
      */
-    @RequestMapping(value = "/cart/add", method = RequestMethod.GET)
+    @RequestMapping(value = "/**/cart/add", method = RequestMethod.GET)
     public void addToCart(Integer bId, HttpServletRequest req, HttpServletResponse resp) throws IOException {
         //由商品編號查詢圖書訊息
         Book book = bookService.queryBookById(bId);

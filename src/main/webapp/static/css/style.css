@@ -161,9 +161,12 @@ div{
 .book_name {
 
 	width: 30px;
-	height: 300px;
+	height: 400px;
 	/*border: 1px solid crimson;*/
-	display: inline-block;
+	/*display: inline-block;*/
+	/*white-space: nowrap; !* 禁止換行 *!*/
+	/*overflow: hidden; !* 隱藏超出部分 *!*/
+	text-overflow: ellipsis; /* 在超出部分添加省略號 */
 }
 
 .bottom_info {

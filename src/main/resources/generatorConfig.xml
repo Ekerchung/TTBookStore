@@ -33,7 +33,7 @@
         <!-- domainObjectName属性指定生成出来的實體類的類名 -->
         <table tableName="t_book" domainObjectName="Book"/>
         <table tableName="t_order" domainObjectName="Order"/>
-        <table tableName="t_order_item" domainObjectName="OrderItem"/>
+        <table tableName="t_orderitem" domainObjectName="OrderItem"/>
         <table tableName="t_user" domainObjectName="User"/>
     </context>
 </generatorConfiguration>
