@@ -23,7 +23,7 @@ TTBookStore使用SSM框架、Thymeleaf、maven....等技術，重構之前的JSP
   - Maven
   - MVC設計模式
   - RESTful API
-  -Tomcat
+  - Tomcat
 
 
 ## 實現功能(Service)
